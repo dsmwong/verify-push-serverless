@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [main]
+    branches: [master]
 
 env:
   NODE_VERSION: '10.x' # set this to the node version to use
@@ -18,9 +18,18 @@ jobs:
       - name: npm install
         run: |
           npm install
+      - name: 'writing google secret file'
+        run: |
+          echo "$GOOGLE_SECRET" > assets/google-token-secret.private.json
+        env:
+          GOOGLE_SECRET: ${{secrets.GOOGLE_TOKEN_APIKEY}}
       - name: 'Deploying to Twilio'
         run: |
           npm run ci:deploy-functions --if-present
         env:
           ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
           AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          VERIFY_SERVICE_SID: ${{ secrets.TWILIO_VERIFY_SERVICE_SID }}
+          GOOGLE_SERVICE_CLIENT_EMAIL: ${{ secrets.GOOGLE_SERVICE_CLIENT_EMAIL }}
+          GOOGLE_FILE: ${{ secrets.GOOGLE_FILE }}
+          GOOGLE_SHEET_RANGE: ${{ secrets.GOOGLE_SHEET_RANGE }}
