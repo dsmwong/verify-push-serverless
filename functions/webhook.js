@@ -18,6 +18,8 @@ exports.handler = function(context, event, callback) {
                 .fetch()
                 .then(challenge => {
                   console.log(`challenge details ${JSON.stringify(challenge)}`);
+                  console.log(`Details ${JSON.stringify(challenge.details)}`);
+                  console.log(`Status ${JSON.stringify(challenge.status)}`);
                   callback(null, {status: "done", event: event});
                 })
                 .catch(error => {
