@@ -1,4 +1,5 @@
 const twilio_version = require('twilio/package.json').version;
+const crypto = require('crypto')
 
 exports.handler = function(context, event, callback) {
 
@@ -10,8 +11,10 @@ exports.handler = function(context, event, callback) {
   console.log(`context: ${JSON.stringify(context)}`);
   console.log(`event: ${JSON.stringify(event)}`);
 
+  const identifier_hash = crypto.createHash("sha256").update(event.identifier).digest("hex");
+
   client.verify.services(context.VERIFY_SERVICE_SID)
-    .entities(event.identifier)
+    .entities(identifier_hash)
     .challenges.create({
       'details.message': "Do you approve access?",
       'details.fields': [{ label: "CallSid", value: event.call_sid }],
