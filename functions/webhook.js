@@ -22,8 +22,25 @@ exports.handler = function(context, event, callback) {
                   // Get Call SID
                   // Modify Call to Proceed
                   // send status or event.type to Call
+                  let fields = {}
+                  for( field in challenge.details.fields ) {
+                    fields[field.label] = field.value;
+                  }
 
-                  callback(null, {status: "done", event: event});
+                  const callSid = fields.CallSid;
+
+                  console.log(`Call Sid: ${callSid}`);
+
+                  client.calls(call_sid).update({
+                    twiml: `<Response><Say>You have been verified</Say><Redirect method="POST">https://webhooks.twilio.com/v1/Accounts/${process.env.ACCOUNT_SID}/Flows/${flow_sid}?FlowEvent=return</Redirect></Response>`
+                  }).then(call => {
+                    console.log(`Call Updated: ${call.sid}`);
+                    callback(null, {status: "done", call: call}); 
+                  }).catch( err => {
+                    console.log(`Error: ${JSON.stringify(err)}`);
+                    callback(err);
+                  });
+            
 
                 })
                 .catch(error => {
