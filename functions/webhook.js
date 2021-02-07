@@ -27,13 +27,13 @@ exports.handler = function(context, event, callback) {
                     console.log(`${JSON.stringify(challenge.details.fields[index])}`);
                     fields[challenge.details.fields[index].label] = challenge.details.fields[index].value;
                   }
-                  
+
                   console.log(`${JSON.stringify(fields)}`);
                   const callSid = fields.CallSid;
 
                   console.log(`Call Sid: ${callSid}`);
 
-                  client.calls(call_sid).update({
+                  client.calls(callSid).update({
                     twiml: `<Response><Say>You have been verified</Say><Redirect method="POST">https://webhooks.twilio.com/v1/Accounts/${context.ACCOUNT_SID}/Flows/FW15328ea9f28f5c3b3250eb87ecc47f3f?FlowEvent=return</Redirect></Response>`
                   }).then(call => {
                     console.log(`Call Updated: ${call.sid}`);
