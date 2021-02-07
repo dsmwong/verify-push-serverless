@@ -24,9 +24,11 @@ exports.handler = function(context, event, callback) {
                   // send status or event.type to Call
                   let fields = {}
                   for( field in challenge.details.fields ) {
+                    console.log(`${JSON.stringify(field)}`);
                     fields[field.label] = field.value;
                   }
 
+                  console.log(`${JSON.stringify(fields)}`);
                   const callSid = fields.CallSid;
 
                   console.log(`Call Sid: ${callSid}`);
