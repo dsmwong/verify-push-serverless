@@ -34,7 +34,7 @@ exports.handler = function(context, event, callback) {
                   console.log(`Call Sid: ${callSid}`);
 
                   client.calls(callSid).update({
-                    url: `https://${context.DOMAIN_NAME}/twiml/flowreturn`
+                    url: `https://${context.DOMAIN_NAME}/twiml/flowreturn?verifyStatus=${challenge.status}`
                   }).then(call => {
                     console.log(`Call Updated: ${call.sid}`);
                     callback(null, {status: "done", call: call}); 
