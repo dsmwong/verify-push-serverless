@@ -34,7 +34,7 @@ exports.handler = function(context, event, callback) {
                   console.log(`Call Sid: ${callSid}`);
 
                   client.calls(callSid).update({
-                    twiml: '<Response><Say>You have been verified</Say><Redirect method="POST">' + encodeURI('https://webhooks.twilio.com/v1/Accounts/' + context.ACCOUNT_SID + '/Flows/FW15328ea9f28f5c3b3250eb87ecc47f3f?FlowEvent=return&verify=approved')+ '</Redirect></Response>'
+                    url: `https://${context.DOMAIN_NAME}/twiml/flowreturn`
                   }).then(call => {
                     console.log(`Call Updated: ${call.sid}`);
                     callback(null, {status: "done", call: call}); 
